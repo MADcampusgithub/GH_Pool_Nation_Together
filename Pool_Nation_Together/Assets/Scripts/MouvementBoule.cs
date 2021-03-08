@@ -5,7 +5,7 @@ using UnityEngine;
 public class MouvementBoule : MonoBehaviour
 {
     [SerializeField]
-    [Range(0.1f, 1000f)]
+    [Range(0.1f, 20f )]
     float force;
     Rigidbody RD;
 
@@ -18,8 +18,7 @@ public class MouvementBoule : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RD.AddForce(Vector3.forward * force, ForceMode.Impulse);
-
+            RD.AddForce(this.transform.forward * force, ForceMode.Impulse);
         }
     }
 }
