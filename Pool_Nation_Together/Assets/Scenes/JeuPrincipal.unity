@@ -553,7 +553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RB_boule: {fileID: 1603589303}
-  minimumSpeed: 0.1
+  minimumSpeed: 0.05
   sensibilite: 3
 --- !u!1 &705507993
 GameObject:
@@ -1132,7 +1132,7 @@ PrefabInstance:
     - target: {fileID: 4943591313183238857, guid: 02ba4546aa878f04f92a24d2e7f133dd, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b0673cfa6f428b7468067e774c140e98, type: 2}
+      objectReference: {fileID: 2100000, guid: ccee36242c5a45d498c74ff435483d06, type: 2}
     - target: {fileID: 4943591313183238859, guid: 02ba4546aa878f04f92a24d2e7f133dd, type: 3}
       propertyPath: m_Name
       value: Boules (5)
@@ -1644,7 +1644,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f0bf21504cabe42a7a0f7f5e65ce9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 10
+  force: 5
 --- !u!4 &1630262467 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4943591313183238863, guid: 02ba4546aa878f04f92a24d2e7f133dd, type: 3}
@@ -1660,7 +1660,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1631722443}
   m_Layer: 0
-  m_Name: Boules
+  m_Name: Set_Boules
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

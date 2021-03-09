@@ -24,24 +24,32 @@ public class CameraJoueur : MonoBehaviour
     {
         if (RB_boule.velocity.magnitude <= minimumSpeed || Input.GetKeyDown(KeyCode.Space))
         {
-            CamPlacement();
+            RB_boule.velocity = Vector3.zero;
         }
         if (RB_boule.velocity.magnitude == 0f)
         {
-            RB_boule.transform.rotation = this.transform.rotation;
+            RB_boule.transform.rotation = Quaternion.Euler(0, this.transform.rotation.eulerAngles.y, 0);
+            CamPlacement();
         }
     }
 
     private void CamPlacement()
     {
-        if (Mathf.Floor(Vector3.Distance(RB_boule.transform.position, this.transform.position)) != Mathf.Floor(offset.magnitude))
+        if (Arrondi(Vector3.Distance(RB_boule.transform.position, this.transform.position), 2) != Arrondi(offset.magnitude, 2))
         {
             this.transform.position = RB_boule.transform.position + offset;
-
+            this.transform.LookAt(RB_boule.transform);
         }
         else
         {
             this.transform.RotateAround(RB_boule.transform.position, new Vector3(0, 1, 0), Input.GetAxis("Mouse X") * sensibilite * Time.deltaTime * 100);
         }
+    }
+    private float Arrondi(float f, int n)
+    {
+        float resultat;
+        resultat = Mathf.Round(f * Mathf.Pow(10, n));
+        resultat /= Mathf.Pow(10, n);
+        return resultat;
     }
 }

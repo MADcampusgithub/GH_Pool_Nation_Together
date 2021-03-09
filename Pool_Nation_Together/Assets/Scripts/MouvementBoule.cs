@@ -7,18 +7,18 @@ public class MouvementBoule : MonoBehaviour
     [SerializeField]
     [Range(0.1f, 20f )]
     float force;
-    Rigidbody RD;
+    Rigidbody RB;
 
     void Start()
     {
-        RD = GetComponent<Rigidbody>();
+        RB = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            RD.AddForce(this.transform.forward * force, ForceMode.Impulse);
+            RB.AddForce(this.transform.forward * force, ForceMode.Impulse);
         }
     }
 }
