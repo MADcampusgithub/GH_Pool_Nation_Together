@@ -22,11 +22,11 @@ public class CameraJoueur : MonoBehaviour
 
     void Update()
     {
-        if (RB_boule.velocity.magnitude <= minimumSpeed || Input.GetKeyDown(KeyCode.Space))
+        if (RB_boule.velocity.magnitude <= minimumSpeed || Input.GetMouseButtonUp(0))
         {
             RB_boule.velocity = Vector3.zero;
         }
-        if (RB_boule.velocity.magnitude == 0f)
+        if (RB_boule.velocity.magnitude == 0f && !Input.GetMouseButton(0))
         {
             RB_boule.transform.rotation = Quaternion.Euler(0, this.transform.rotation.eulerAngles.y, 0);
             CamPlacement();
