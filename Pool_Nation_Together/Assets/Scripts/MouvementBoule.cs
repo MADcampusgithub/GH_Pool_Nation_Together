@@ -26,7 +26,6 @@ public class MouvementBoule : MonoBehaviour
             if (force < 0f)
             {
                 force = 0f;
-
             }
             else
             {
@@ -36,6 +35,7 @@ public class MouvementBoule : MonoBehaviour
                 }
             }
         }
+
         if (Input.GetMouseButtonUp(0)) //tire lorsqu'on relanche la souris
         {
             if (force != 0f)
