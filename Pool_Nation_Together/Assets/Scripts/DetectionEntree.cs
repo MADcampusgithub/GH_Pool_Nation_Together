@@ -5,6 +5,7 @@ using UnityEngine;
 public class DetectionEntree : MonoBehaviour
 {
     public Component[] Boules = new Component[15];
+    private MouvementBoule ScriptBouleblc;
 
     private void Start()
     {
@@ -13,10 +14,16 @@ public class DetectionEntree : MonoBehaviour
         {
             Debug.Log(boule.name);
         }
+        ScriptBouleblc = GameObject.FindObjectOfType<MouvementBoule>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name + " " + other.tag);
+        other.attachedRigidbody.velocity = Vector3.zero;
+        if (other.tag == "Boule blanche")
+        {
+            ScriptBouleblc.DeplacementBoule();
+        }
     }
 }

@@ -1976,6 +1976,8 @@ MonoBehaviour:
   force: 0.1
   maximumForce: 15
   sensibiliteForce: 1
+  vitesseDeplacement: 10
+  hauteurQuandDeplacement: 2
 --- !u!1 &1629598201
 GameObject:
   m_ObjectHideFlags: 0
