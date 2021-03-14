@@ -8,6 +8,8 @@ TagManager:
   - Pleines
   - "Ray\xE9es"
   - Boule noir
+  - Sortie
+  - Entree
   layers:
   - Default
   - TransparentFX

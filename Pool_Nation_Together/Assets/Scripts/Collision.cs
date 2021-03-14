@@ -31,7 +31,17 @@ public class Collision : MonoBehaviour
         if (other.tag == "Rayées" || other.tag == "Pleines")
         {
             ScriptBoule.Boules.Remove(other.transform);
-            Destroy(other, 2f);
+            if (this.gameObject.tag == "Entree")
+            {
+                Destroy(other);
+            }
         }
+
+        string message = "";
+        foreach (Transform boule in ScriptBoule.Boules)
+        {
+            message += boule.name + " + " + boule.tag + "\n";
+        }
+        Debug.Log(message);
     }
 }

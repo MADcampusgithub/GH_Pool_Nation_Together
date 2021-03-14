@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MouvementBoule : MonoBehaviour
 {
-    [SerializeField][Range(0.1f, 15f)] float force = 0.1f;
+    [SerializeField][Range(0.1f, 12f)] float force = 0.1f;
     private float minimumForce = 0.1f;
-    private float maximumForce = 15f;
+    private float maximumForce = 12f;
     [SerializeField][Range(0f, 10f)] float sensibiliteForce;
     Vector3 posInitial;
     Rigidbody RB;
