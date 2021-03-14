@@ -15,7 +15,7 @@ public class Collision : MonoBehaviour
 
     void Update()
     {
-        if ((Time.time - startTimer) >= 1f && bouleEntree)
+        if ((Time.time - startTimer) >= 1f && bouleEntree && ScriptBoule.BoulesArrete())
         {
             ScriptBoule.DeplacementBoule(true);
             bouleEntree = false;
@@ -28,12 +28,12 @@ public class Collision : MonoBehaviour
             startTimer = Time.time;
             bouleEntree = true;
         }
-        if (other.tag == "Rayées" || other.tag == "Pleines")
+        if (other.gameObject.tag == "Rayées" || other.gameObject.tag == "Pleines")
         {
             ScriptBoule.Boules.Remove(other.transform);
             if (this.gameObject.tag == "Entree")
             {
-                Destroy(other);
+                Destroy(other.gameObject);
             }
         }
 

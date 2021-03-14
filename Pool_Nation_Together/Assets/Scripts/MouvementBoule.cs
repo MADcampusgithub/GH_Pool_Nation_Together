@@ -12,14 +12,20 @@ public class MouvementBoule : MonoBehaviour
     Rigidbody RB;
     public bool peutBouger = false;
     public bool peutTirer = false;
+    string[] difficultes = new string[] { "Champion", "Difficile", "Moyen", "Facile" };
+    public string difficulte;
 
     [SerializeField][Range(1f, 200f)] float vitesseDeplacement;
     [SerializeField][Range(0f, 10f)] float hauteurQuandDeplacement;
     [SerializeField][Range(0.01f, 5f)] float minimumSpeed;
     public List<Transform> Boules = new List<Transform>();
+    public float vitesseRalentissement;
+    [SerializeField]
+    [Range(-0.3f, 0.3f)] public float decalage = 0f;
 
     void Start()
     {
+        difficulte = difficultes[3];
         RB = GetComponent<Rigidbody>();
         posInitial = this.transform.position;
 
@@ -40,12 +46,19 @@ public class MouvementBoule : MonoBehaviour
 
             if (RB.velocity.magnitude <= minimumSpeed || Input.GetMouseButtonUp(0))
             {
-                RB.velocity = Vector3.zero;
+                RB.velocity = Vector3.Lerp(RB.velocity, Vector3.zero, vitesseRalentissement);
                 foreach (Transform boule in Boules)
                 {
                     if (boule.gameObject.GetComponent<Rigidbody>().velocity.magnitude <= minimumSpeed)
                     {
-                        
+                        boule.gameObject.GetComponent<Rigidbody>().velocity = Vector3.Lerp(boule.gameObject.GetComponent<Rigidbody>().velocity, Vector3.zero, vitesseRalentissement);
+                    }
+                }
+                if (BoulesArrete())
+                {
+                    foreach (Transform boule in Boules)
+                    {
+                        boule.gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
                     }
                 }
             }
@@ -94,18 +107,25 @@ public class MouvementBoule : MonoBehaviour
 
     private void Tire()
     {
-        if (Input.GetMouseButton(0) && RB.velocity == Vector3.zero) //modifie la force lorsqu'on maintient la souris
+        if (Arrondi(RB.velocity.magnitude, 2) == 0f) //modifie la force lorsqu'on maintient la souris
         {
-            force += Input.GetAxis("Mouse Y") * sensibiliteForce;
-            if (force < minimumForce)
+            RB.velocity = Vector3.zero;
+            RB.angularVelocity = Vector3.zero;
+            Prediction("Facile", 0.01f);
+
+            if (Input.GetMouseButton(0))
             {
-                force = minimumForce;
-            }
-            else
-            {
-                if (force > maximumForce)
+                force += Input.GetAxis("Mouse Y") * sensibiliteForce;
+                if (force < minimumForce)
                 {
-                    force = maximumForce;
+                    force = minimumForce;
+                }
+                else
+                {
+                    if (force > maximumForce)
+                    {
+                        force = maximumForce;
+                    }
                 }
             }
         }
@@ -118,5 +138,67 @@ public class MouvementBoule : MonoBehaviour
                 force = 0.1f;
             }
         }
+    }
+
+    private float Arrondi(float a, int n)
+    {
+        float resultat;
+        resultat = Mathf.Round(a * Mathf.Pow(10, n));
+        resultat /= Mathf.Pow(10, n);
+        return resultat;
+    }
+
+    public bool BoulesArrete()
+    {
+        foreach (Transform boule in Boules)
+        {
+            if (Arrondi(boule.gameObject.GetComponent<Rigidbody>().velocity.magnitude, 2) != 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void Prediction(string difficulte, float lineOffset)
+    {
+        //champion, difficile, moyen, facile
+        float moitierTaille = this.transform.localScale.x / 2;
+
+        Vector3 direction = this.transform.forward;
+
+        RaycastHit hitMin;
+        Physics.Raycast(this.transform.position, this.transform.position, out hitMin);
+        Vector3 originMin = Vector3.zero;
+        float decalageMin;
+
+        if (difficulte == difficultes[1] || difficulte == difficultes[2] || difficulte == difficultes[3])
+        {
+            float minDist = 30f;
+
+            for (decalage = -moitierTaille; decalage <= moitierTaille; decalage += 0.005f)
+            {
+                float avancer = -Mathf.Abs(decalage) + moitierTaille;
+                Vector3 origin = this.transform.position + this.transform.right * decalage + this.transform.forward * avancer;
+
+                RaycastHit hit;
+                Physics.Raycast(origin, direction, out hit);
+
+                if (Vector3.Distance(origin, hit.point) < minDist)
+                {
+                    minDist = Vector3.Distance(origin, hit.point);
+                    Physics.Raycast(origin, direction, out hitMin);
+                    originMin = origin;
+                    decalageMin = decalage;
+                }
+            }
+            Debug.DrawLine(originMin, hitMin.point);
+        }
+
+        if (difficulte == difficultes[2] || difficulte == difficultes[3])
+        {
+            Vector3 origin = hitMin.point;            
+        }
+
     }
 }
