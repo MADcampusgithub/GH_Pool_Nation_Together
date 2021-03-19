@@ -1583,12 +1583,13 @@ MonoBehaviour:
   sensibiliteForce: 1
   peutBouger: 0
   peutTirer: 0
-  difficulte: 
+  nbDifficulte: 1
   vitesseDeplacement: 200
   hauteurQuandDeplacement: 0.3
   minimumSpeed: 1.6
   Boules: []
-  vitesseRalentissement: 0.004
+  vitesseRalentissement: 0.02
+  lineOffset: 0.001
 --- !u!1001 &1006782364
 PrefabInstance:
   m_ObjectHideFlags: 0

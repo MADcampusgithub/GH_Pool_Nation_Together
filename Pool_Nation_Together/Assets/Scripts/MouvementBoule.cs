@@ -13,19 +13,18 @@ public class MouvementBoule : MonoBehaviour
     public bool peutBouger = false;
     public bool peutTirer = false;
     string[] difficultes = new string[] { "Champion", "Difficile", "Moyen", "Facile" };
-    public string difficulte;
+    [SerializeField][Range(0, 3)] int nbDifficulte;
+    private string difficulte;
 
     [SerializeField][Range(1f, 200f)] float vitesseDeplacement;
     [SerializeField][Range(0f, 10f)] float hauteurQuandDeplacement;
     [SerializeField][Range(0.01f, 5f)] float minimumSpeed;
     public List<Transform> Boules = new List<Transform>();
     public float vitesseRalentissement;
-    [SerializeField]
-    [Range(-0.3f, 0.3f)] public float decalage = 0f;
+    public float lineOffset = 0.001f;
 
     void Start()
     {
-        difficulte = difficultes[3];
         RB = GetComponent<Rigidbody>();
         posInitial = this.transform.position;
 
@@ -40,6 +39,8 @@ public class MouvementBoule : MonoBehaviour
 
     void Update()
     {
+        difficulte = difficultes[nbDifficulte];
+
         if (!peutBouger)
         {
             Tire();
@@ -111,7 +112,7 @@ public class MouvementBoule : MonoBehaviour
         {
             RB.velocity = Vector3.zero;
             RB.angularVelocity = Vector3.zero;
-            Prediction("Facile", 0.01f);
+            Prediction(difficulte, 0.01f);
 
             if (Input.GetMouseButton(0))
             {
@@ -170,15 +171,16 @@ public class MouvementBoule : MonoBehaviour
         RaycastHit hitMin;
         Physics.Raycast(this.transform.position, this.transform.position, out hitMin);
         Vector3 originMin = Vector3.zero;
-        float decalageMin;
+        float decalageMin = moitierTaille;
+        float avancer = moitierTaille;
 
         if (difficulte == difficultes[1] || difficulte == difficultes[2] || difficulte == difficultes[3])
         {
             float minDist = 30f;
 
-            for (decalage = -moitierTaille; decalage <= moitierTaille; decalage += 0.005f)
+            for (float decalage = -moitierTaille; decalage <= moitierTaille; decalage += 0.005f)
             {
-                float avancer = -Mathf.Abs(decalage) + moitierTaille;
+                avancer = -Mathf.Abs(decalage) + moitierTaille;
                 Vector3 origin = this.transform.position + this.transform.right * decalage + this.transform.forward * avancer;
 
                 RaycastHit hit;
@@ -197,7 +199,12 @@ public class MouvementBoule : MonoBehaviour
 
         if (difficulte == difficultes[2] || difficulte == difficultes[3])
         {
-            Vector3 origin = hitMin.point;            
+            direction = Vector3.Reflect(direction.normalized, hitMin.normal);
+            originMin = hitMin.point + (lineOffset + avancer) * direction + decalageMin * this.transform.right;
+
+            RaycastHit hit;
+            Physics.Raycast(originMin, direction, out hit);
+            Debug.DrawLine(originMin, hit.point);
         }
 
     }
